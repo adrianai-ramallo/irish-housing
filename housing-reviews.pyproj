@@ -27,6 +27,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="housing_reviews\app.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="runserver.py" />
     <Compile Include="housing_reviews\__init__.py" />
     <Compile Include="housing_reviews\views.py" />
@@ -36,10 +39,14 @@
     <Folder Include="housing_reviews\static\" />
     <Folder Include="housing_reviews\static\content\" />
     <Folder Include="housing_reviews\static\fonts\" />
+    <Folder Include="housing_reviews\static\assets\" />
+    <Folder Include="housing_reviews\static\css\" />
     <Folder Include="housing_reviews\static\scripts\" />
     <Folder Include="housing_reviews\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="housing_reviews\static\css\Stylesheet1.css" />
+    <Content Include="housing_reviews\templates\post_reviews.html" />
     <Content Include="requirements.txt" />
     <Content Include="housing_reviews\static\content\bootstrap.css" />
     <Content Include="housing_reviews\static\content\bootstrap.min.css" />
@@ -63,10 +70,10 @@
     <Content Include="housing_reviews\static\scripts\respond.js" />
     <Content Include="housing_reviews\static\scripts\respond.min.js" />
     <Content Include="housing_reviews\static\scripts\_references.js" />
-    <Content Include="housing_reviews\templates\about.html" />
-    <Content Include="housing_reviews\templates\contact.html" />
+    <Content Include="housing_reviews\templates\myreviews.html" />
+    <Content Include="housing_reviews\templates\account.html" />
     <Content Include="housing_reviews\templates\index.html" />
-    <Content Include="housing_reviews\templates\layout.html" />
+    <Content Include="housing_reviews\templates\base.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

@@ -1,33 +1,205 @@
-{% extends "layout.html" %}
+{% extends 'base.html' %}
 
-{% block content %}
 
-<div class="jumbotron">
-    <h1>Flask</h1>
-    <p class="lead">Flask is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://flask.pocoo.org/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-</div>
+{% block head %}
+<title>Housing Reviews| Home</title>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            Flask gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://flask.pocoo.org/docs/">Learn more &raquo;</a></p>
+{% endblock %}
+
+{% block body %}
+
+<!-------------------------------Nav Bar adapted from Bootstrap-------------->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand brand" href="/">Irish Housing Reviews    </a>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home </a>
+            </li>
+
+            {% if not current_user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="/account">My Account</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+                <a class="nav-link" href="/post_review">Post</a>
+            </li>
+
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="/myreviews">My Reviews</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+
+        </ul>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>The Python Package Index is a repository of software for the Python programming language.</p>
-        <p><a class="btn btn-default" href="https://pypi.python.org/pypi">Learn more &raquo;</a></p>
+    <a id="welcome" class="brand bold" href="/myreviews">Welcome {{current_user.username}}</a>
+
+    {% endif %}
+</nav>
+
+<!-----------------------------Main-------------------------->
+
+<main id="responsive">
+
+
+    <div id="index-logo">
+        <img id="logo" src="/static/assets/logo.png" alt="housing reviews logo for all acommodation types in the irish market">
+        <h1 class="brand">Irish Housing Reviews</h1>
     </div>
-    <div class="col-md-4">
-        <h2>Microsoft Azure</h2>
-        <p>You can easily publish to Microsoft Azure using Visual Studio. Find out how you can host your application using a free trial today.</p>
-        <p><a class="btn btn-default" href="http://azure.microsoft.com">Learn more &raquo;</a></p>
+    <div class="split">
+
+        <div class="split-text">
+            <br>
+            <br>
+            <p class="bold"> Create an <a href="/account">account</a> and <a href="/post_review">post</a> your experience</p>
+            <p class="bold"> Find previous reviews at the <a href="#table-reviews">bottom</a> of the page</p>
+
+
+
+            <br>
+            <br>
+            <p class="bold"> Be part! </p>
+            <p> This comunity is created to exchange useful information about places rented in Ireland</p>
+            <p class="bold"> Be Mindful!</p>
+            <p> All comments are the point of view of someone else, take what it's useful for you, but do your own reasearch before renting</p>
+            <p class="bold"> Be Respectfull!</p>
+            <p> Do not share personal information of your landlord nor housemates</p>
+
+        </div>
+
+
+        <form action="{{ request.path }}" method="POST" id="contact-form-inner">
+            {{ form.csrf_token }}
+
+            {{ form.eircode( type="text", class_="form-control",placeholder="Search by EIRCODE")}}
+
+            {% for error in form.eircode.errors %}
+            {{ error }}
+            {% endfor%}
+            <br>
+
+            <button type="submit" class="main-btn">
+                <a id="register-btn">Search</a>
+                {{ btn_action }}
+            </button>
+            <br>
+            <br>
+            <img class="slides slides-hidden" src="/static/assets/houses.jpg" alt="Houses in Dublin Ireland" width="600" height=auto>
+            <img class="slides slides-hidden" src="/static/assets/houses2.jpg" alt="Houses in Dublin Ireland" width="600" height=auto>
+            <img class="slides slides-hidden" src="/static/assets/houses3.jpg" alt="Houses in Dublin Ireland" width="600" height=auto>
+
+            <style>
+                .slides {
+                    width: 100%;
+                }
+
+                .slides-hidden {
+                    display: none;
+                }
+            </style>
     </div>
-</div>
+
+
+
+    <!-- map-   Adapted from  https://google-map-generator.com/     ------------------>
+
+
+    <div class="split">
+
+
+        <div class="img-main">
+
+            <p class="bold">Not sure of the EIRCODE? Find it below</p>
+            <iframe width="500" height="250" src="https://www.eircode.ie/" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+
+        </div>
+
+        <div class="img-main">
+
+            <p class="bold">Still not convinced? Click on 'View larger map' to access Google Maps</p>
+            <iframe width="500" height="250" src="https://maps.google.com/maps?q=ireland&t=&z=7&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+
+        </div>
+
+    </div>
+
+
+
+
+    <!----------------Table reviews-->
+    <div id="table-reviews" class="table-responsive split">
+        <table class="table table-condensed">
+            <tr>
+                <th>EIRCODE</th>
+                <th>Reviews</th>
+                <th>Rating</th>
+                <th>TimeStamp</th>
+                <th>Posted By</th>
+
+            </tr>
+
+            {% for review in reviews %}
+
+            <tr>
+
+                <td>{{review.eircode}}</td>
+                <td>{{review.text}}</td>
+                <td>{{review.rating}}</td>
+                <td>{{review.time.strftime('%d-%m-%Y %H:%M:%S') }}</td>
+                <td>{{review.user_id}}</td>
+
+
+
+                {% endfor %}
+
+
+            </tr>
+
+
+        </table>
+    </div>
+    <br>
+</main>
+
+
+
+    {% block script %}
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#myBtn2").click(function(){
+            $("#review_popup").modal()
+        });
+    });
+
+</script>
+
+<!--code adapted from https://codereview.stackexchange.com/questions/215967/javascript-change-image-every-three-seconds-->
+<script>
+  addEventListener("DOMContentLoaded",() => {
+      var index = 0;
+      const slides = document.querySelectorAll(".slides");
+      const classHide = "slides-hidden", count = slides.length;
+      nextSlide();
+      function nextSlide() {
+          slides[(index ++) % count].classList.add(classHide);
+          slides[index % count].classList.remove(classHide);
+          setTimeout(nextSlide, 4000);
+      }
+  });
+</script>
+
+
+
+  {% endblock%}
 
 {% endblock %}

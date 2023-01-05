@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title>Housing Reviews| My Reviews</title>
+
+{% endblock %}
+
+{% block body %}
+
+<!-------------------------------Nav Bar adapted from Bootstrap-------------->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand brand" href="/">Irish Housing Reviews   </a>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item ">
+                <a class="nav-link" href="/">Home </a>
+            </li>
+
+            {% if not current_user.is_authenticated %}
+            <li class="nav-item ">
+                <a class="nav-link" href="./account">My Account</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item ">
+                <a class="nav-link" href="./post_review">Post</a>
+            </li>
+
+            {% if current_user.is_authenticated %}
+            <li class="nav-item active">
+                <a class="nav-link" href="/myreviews">My Reviews</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./logout">Logout</a>
+            </li>
+
+        </ul>
+    </div>
+    <a id="welcome" class="brand bold" href="./myreviews">Welcome {{current_user.username}}</a>
+
+    {% endif %}
+</nav>
+
+
+<!-----------------------------Main-------------------------->
+
+<main id="responsive">
+    <div>
+        <div id="index-top">
+            <div id="index-logo">
+                <img id="logo" src="/static/assets/logo.png" alt="housing reviews logo for all acommodation types in the irish market">
+                <h1 id="h1-home">Irish Housing Reviews</h1>
+            </div>
+            <div id="wrapper">
+                <form action="{{ request.path }}" method="POST" id="contact-form-inner">
+
+                    {{ form.csrf_token }}
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+
+
+                    {{ form.eircode( type="text", class_="form-control",placeholder="Search by EIRCODE")}}
+
+                    {% for error in form.eircode.errors %}
+                    {{ error }}
+                    {% endfor%}
+
+
+                    <button type="submit" class="main-btn">
+                        <a id="register-btn">Search</a>
+                        {{ btn_action }}
+                    </button>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <!----------------Table reviews-->
+
+
+    <div id="table-reviews" class="table-responsive split">
+        <table class="table table-condensed">
+            <tr>
+                <th>EIRCODE</th>
+                <th>Reviews</th>
+                <th>Rating</th>
+                <th>TimeStamp</th>
+                <th>Posted By</th>
+
+            </tr>
+
+
+            {% for review in reviews %}
+
+            <tr>
+
+                <td>{{review.eircode}}</td>
+                <td>{{review.text}}</td>
+                <td>{{review.rating}}</td>
+                <td>{{review.time.strftime('%d-%m-%Y %H:%M:%S') }}</td>
+                <td>{{review.user_id}}</td>
+
+
+                {% endfor %}
+
+
+            </tr>
+
+        </table>
+
+
+</main>
+
+
+{% endblock %}
