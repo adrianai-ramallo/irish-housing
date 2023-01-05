@@ -265,11 +265,16 @@ def post_review():
 
 
 
- 
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
     TEMPLATES_AUTO_RELOAD=True
+else:
+    gunicorn_app = create_app()
 
 
 
